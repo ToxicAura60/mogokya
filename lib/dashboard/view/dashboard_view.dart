@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:app1/dashboard/cubit/dashboard_cubit.dart';
 import 'package:app1/dashboard/view/dashboard_page.dart';
 import 'package:app1/profile/view/profile_view.dart';
+import 'package:app1/settings/view/settings_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
@@ -10,7 +12,7 @@ import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 class DashboardView extends StatelessWidget {
   DashboardView({super.key});
 
-  final pagearr = [Dashboard(), OnProgress(), OnProgress(), Dashboard()];
+  final pagearr = [Dashboard(), OnProgress(), OnProgress(), OnProgress()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +35,17 @@ class DashboardView extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg"),
+                  ),
                 )
               ],
             ),
@@ -47,6 +57,12 @@ class DashboardView extends StatelessWidget {
       bottomNavigationBar: SnakeNavigationBar.color(
         onTap: (value) {
           context.read<DashboardCubit>().changePage(value);
+          if (value == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsView()),
+            );
+          }
         },
         backgroundColor: Color(0xFF262626),
         selectedItemColor: Color(0xFFFFFFFF),
@@ -63,7 +79,7 @@ class DashboardView extends StatelessWidget {
             icon: Icon(Icons.chat),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.settings),
           ),
         ],
       ),
@@ -196,58 +212,61 @@ class MechanicItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       // delete me
-      child: Card(
-        elevation: 2,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      offset: Offset(0, 4),
-                      color: Color(0x40000000),
-                    )
+      child: GestureDetector(
+        onTap: () {},
+        child: Card(
+          elevation: 2,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4,
+                        offset: Offset(0, 4),
+                        color: Color(0x40000000),
+                      )
+                    ],
+                  ),
+                  child: Image.network(
+                    "https://media.istockphoto.com/id/1347150429/id/foto/mekanik-profesional-bekerja-pada-mesin-mobil-di-garasi.jpg?s=612x612&w=0&k=20&c=Uw7QwBTEc98rrQPg6j5lmWRe-HHmf7vbiKlZ0WphJHM=",
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("1.95 km"),
+                SizedBox(height: 10),
+                Text("Bengkel Mobil"),
+                Text(
+                  "Makmur Jaya",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star_rounded,
+                      size: 40,
+                      color: Color(0xFFFFC700),
+                    ),
+                    Text(
+                      "4.6",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
-                child: Image.network(
-                  "https://media.istockphoto.com/id/1347150429/id/foto/mekanik-profesional-bekerja-pada-mesin-mobil-di-garasi.jpg?s=612x612&w=0&k=20&c=Uw7QwBTEc98rrQPg6j5lmWRe-HHmf7vbiKlZ0WphJHM=",
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("1.95 km"),
-              SizedBox(height: 10),
-              Text("Bengkel Mobil"),
-              Text(
-                "Makmur Jaya",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star_rounded,
-                    size: 40,
-                    color: Color(0xFFFFC700),
-                  ),
-                  Text(
-                    "4.6",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -9,10 +9,6 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Icon(Icons.arrow_back),
-            SizedBox(
-              width: 16,
-            ),
             Text('Profile Saya'),
           ],
         ),
