@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "935126433252",
+    "project_id": "mogokya-ca875",
+    "storage_bucket": "mogokya-ca875.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935126433252:android:ee46c3a2a177f7c56ddbf1",
+        "android_client_info": {
+          "package_name": "com.example.app1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe0ogBZpR28F29TgpLvP2FT-Dc4S58O3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
