@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:go_router/go_router.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -33,8 +35,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
   }
 
-  void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
-    unawaited(_authenticationRepository.logOut());
+  void _onLogoutRequested(
+      AppLogoutRequested event, Emitter<AppState> emit) async {
+    try {
+      await (_authenticationRepository.logOut());
+      GoRouter.of(event.context).go("/home");
+    } catch (_) {}
   }
 
   @override

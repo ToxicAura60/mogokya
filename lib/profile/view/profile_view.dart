@@ -59,7 +59,7 @@ class ProfileView extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () {
-              context.read<AppBloc>().add(AppLogoutRequested());
+              context.read<AppBloc>().add(AppLogoutRequested(context: context));
             },
           ),
         ],

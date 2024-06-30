@@ -5,7 +5,8 @@ sealed class AppEvent {
 }
 
 final class AppLogoutRequested extends AppEvent {
-  const AppLogoutRequested();
+  const AppLogoutRequested({required this.context});
+  final BuildContext context;
 }
 
 final class _AppUserChanged extends AppEvent {
