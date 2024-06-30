@@ -1,4 +1,4 @@
-name: authentication_repository
+name: messaging_repository
 description: "A new Flutter project."
 publish_to: 'none'
 version: 1.0.0+1
@@ -8,10 +8,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^3.1.1
+  firebase_core: ^3.1.0
   firebase_auth: ^5.1.0
   equatable: ^2.0.5
-  hive: ^2.2.3
   cloud_firestore: ^5.0.1
 
 

@@ -1,30 +1,31 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firebase_firestore;
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-// import 'package:cache/cache.dart';
+
+class LogOutFailure implements Exception {}
 
 class AuthenticationRepository {
   AuthenticationRepository({
-    //CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
-  }) : //_cache = cache ?? CacheClient(),
-        _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
+    firebase_firestore.FirebaseFirestore? firebaseFirestore,
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _firebaseFirestore =
+            firebaseFirestore ?? firebase_firestore.FirebaseFirestore.instance;
 
-  //final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
-
-  static const userCacheKey = '__user_cache_key__';
+  final firebase_firestore.FirebaseFirestore _firebaseFirestore;
 
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      // _cache.write(key: userCacheKey, value: user);
       return user;
     });
   }
 
   User get currentUser {
-    //return _cache.read<User>(key: userCacheKey) ?? User.empty;
-    return User.empty;
+    return _firebaseAuth.currentUser == null
+        ? User.empty
+        : _firebaseAuth.currentUser!.toUser;
   }
 
   Future<void> LogInWithPhoneNumber({
@@ -37,14 +38,23 @@ class AuthenticationRepository {
       verificationFailed: (firebase_auth.FirebaseAuthException e) {
         print(e);
       },
-      codeSent: (String verificationId, int? resendToken) {
+      codeSent: (String verificationId, int? resendToken) async {
         codeSent(verificationId);
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  Future<void> verifyOtp({
+  Future<void> insertUserToFirestore(
+      {required String userId, required User user}) async {
+    await _firebaseFirestore
+        .collection('users')
+        .doc(userId)
+        .collection('messages')
+        .add(user.toMap());
+  }
+
+  Future<void> verifyPhoneNumber({
     required verificationId,
     required smsCode,
   }) async {
@@ -54,11 +64,26 @@ class AuthenticationRepository {
 
     await _firebaseAuth.signInWithCredential(credential);
   }
+
+  Future<void> logOut() async {
+    try {
+      await Future.wait([
+        _firebaseAuth.signOut(),
+      ]);
+    } catch (_) {
+      throw LogOutFailure();
+    }
+  }
 }
 
 extension on firebase_auth.User {
-  /// Maps a [firebase_auth.User] into a [User].
   User get toUser {
-    return User(id: uid, email: email, name: displayName, photo: photoURL);
+    return User(
+      uid: uid,
+      email: email,
+      phoneNumber: phoneNumber,
+      name: displayName,
+      photoURL: photoURL,
+    );
   }
 }

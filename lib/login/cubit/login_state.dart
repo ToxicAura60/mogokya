@@ -6,6 +6,7 @@ class LoginState extends Equatable {
     this.countryCode = "ID",
     this.phoneNumber = "",
     this.verificationId = "",
+    this.smsCode = "",
     this.status = FormzSubmissionStatus.initial,
   });
 
@@ -13,6 +14,7 @@ class LoginState extends Equatable {
   final countryCode;
   final phoneNumber;
   final verificationId;
+  final smsCode;
   final FormzSubmissionStatus status;
 
   @override
@@ -21,6 +23,7 @@ class LoginState extends Equatable {
         countryCode,
         phoneNumber,
         verificationId,
+        smsCode,
         status,
       ];
 
@@ -29,6 +32,7 @@ class LoginState extends Equatable {
     String? countryCode,
     String? phoneNumber,
     String? verificationId,
+    String? smsCode,
     FormzSubmissionStatus? status,
   }) {
     return LoginState(
@@ -36,6 +40,7 @@ class LoginState extends Equatable {
       countryCode: countryCode ?? this.countryCode,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       verificationId: verificationId ?? this.verificationId,
+      smsCode: smsCode ?? this.smsCode,
       status: status ?? this.status,
     );
   }

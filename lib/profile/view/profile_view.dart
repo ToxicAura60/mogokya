@@ -1,27 +1,35 @@
+import 'package:app1/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfileView extends StatelessWidget {
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Text('Profile Saya'),
-          ],
+        centerTitle: false,
+        title: Text(
+          'Profile Saya',
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(
-              backgroundColor: Colors.grey,
+              backgroundImage: NetworkImage(
+                  "https://performanceautospecialists.com/wp-content/uploads/2019/05/46212975_m.jpg"),
               child: Icon(Icons.person),
             ),
-            title: Text('Nama'),
-            subtitle: Text('email@gmail.com\n+62 811823233'),
+            title: Text(
+              context.read<AppBloc>().state.user.name == null
+                  ? "User"
+                  : context.read<AppBloc>().state.user.name!,
+            ),
+            subtitle: Text(context.read<AppBloc>().state.user.phoneNumber!),
           ),
           Divider(), // Garis pemisah
           ListTile(
@@ -46,8 +54,13 @@ class ProfilePage extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text('Log Out'),
-            onTap: () {},
+            title: Text(
+              'Log Out',
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () {
+              context.read<AppBloc>().add(AppLogoutRequested());
+            },
           ),
         ],
       ),
